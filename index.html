@@ -3,11 +3,10 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=3, user-scalable=1"
+      content="width=device-width, initial-scale=3, user-scalable=1"
     />
     <title></title>
     <link rel="preconnect" href="https://use.typekit.net" crossorigin />
-    <link rel="stylesheet" rel="preload" as="font" href="https://use.typekit.net/.css?v=1738251282" />
     
     <script src="scormdriver.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xapiwrapper/1.11.0/xapiwrapper.min.js"></script>
@@ -22,9 +21,16 @@
       };
 
       function sendStatement() {
+        if (typeof ADL === "undefined" || typeof ADL.XAPIWrapper === "undefined") {
+          console.error("xAPIWrapper is not loaded. Check script loading.");
+          return;
+        }
+        
+        console.log("Sending xAPI statement...");
+
         var statement = {
           actor: {
-            mbox: "mailto:anonymous@example.com", // Replace with actual user email if available
+            mbox: "mailto:anonymous@example.com",
             name: "Anonymous User",
             objectType: "Agent"
           },
@@ -47,14 +53,21 @@
           if (err) {
             console.error("xAPI statement failed", err);
           } else {
-            console.log("xAPI statement sent", resp);
+            console.log("xAPI statement sent successfully", resp);
           }
         });
       }
 
       window.onload = function () {
+        console.log("Page loaded.");
         sendStatement();
-        Start();
+
+        if (typeof Start === "function") {
+          console.log("Calling Start()...");
+          Start();
+        } else {
+          console.warn("Start() is not defined!");
+        }
       };
 
       const LoadContent = function () {
