@@ -6,13 +6,57 @@
       content="width=device-width, initial-scale=1, maximum-scale=3, user-scalable=1"
     />
     <title></title>
-    <link rel="preconnect" href="https://use.typekit.net" crossorigin />  <link rel="stylesheet" rel="preload" as="font" href="https://use.typekit.net/.css?v=1738251282" />
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="stylesheet" rel="preload" as="font" href="https://use.typekit.net/.css?v=1738251282" />
     
     <script src="scormdriver.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xapiwrapper/1.11.0/xapiwrapper.min.js"></script>
     <script>
       USE_LEGACY_IDENTIFIERS_FOR_2004 = true;
       REVIEW_MODE_IS_READ_ONLY = false;
       window.onbeforeunload = () => window.Unload();
+
+      const WatershedLRS = {
+        endpoint: "https://watershedlrs.com/api/organizations/26822/lrs/",
+        auth: "Basic " + btoa("89c9db57c4714b:91e213c7ccb109"),
+      };
+
+      function sendStatement() {
+        var statement = {
+          actor: {
+            mbox: "mailto:anonymous@example.com", // Replace with actual user email if available
+            name: "Anonymous User",
+            objectType: "Agent"
+          },
+          verb: {
+            id: "http://adlnet.gov/expapi/verbs/launched",
+            display: { "en-US": "launched" }
+          },
+          object: {
+            id: document.location.href,
+            definition: {
+              name: { "en-US": "Web Page" },
+              description: { "en-US": "User visited the webpage" }
+            },
+            objectType: "Activity"
+          }
+        };
+
+        ADL.XAPIWrapper.changeConfig(WatershedLRS);
+        ADL.XAPIWrapper.sendStatement(statement, function(err, resp) {
+          if (err) {
+            console.error("xAPI statement failed", err);
+          } else {
+            console.log("xAPI statement sent", resp);
+          }
+        });
+      }
+
+      window.onload = function () {
+        sendStatement();
+        Start();
+      };
+
       const LoadContent = function () {
         [
           "assets/js/project.js",
@@ -20,7 +64,7 @@
           "dist/runtime-main.bundle.js",
           "dist/vendors-main.chunk.js",
         ].forEach((src) => {
-          script = document.createElement("script");
+          let script = document.createElement("script");
           script.src = src;
           script.charset = "utf-8";
           script.async = false;
@@ -29,7 +73,7 @@
       };
     </script>
   </head>
-  <body onload="Start()">
+  <body>
     <div id="app" style="width: 100%; height: 100%"></div>
   </body>
 </html>
