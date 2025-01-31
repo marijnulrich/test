@@ -21,7 +21,7 @@
         auth: "Basic " + btoa("vufeve:talvaz"),
       };
 
-      function sendStatement() {
+      function sendStatement(verbId, verbDisplay) {
         var statement = {
           actor: {
             mbox: "mailto:anonymous@example.com", // Replace with actual user email if available
@@ -29,14 +29,14 @@
             objectType: "Agent"
           },
           verb: {
-            id: "http://adlnet.gov/expapi/verbs/launched",
-            display: { "en-US": "launched" }
+            id: verbId,
+            display: { "en-US": verbDisplay }
           },
           object: {
             id: document.location.href,
             definition: {
               name: { "en-US": "Web Page" },
-              description: { "en-US": "User visited the webpage" }
+              description: { "en-US": "User interacted with the webpage" }
             },
             objectType: "Activity"
           }
@@ -47,14 +47,18 @@
           if (err) {
             console.error("xAPI statement failed", err);
           } else {
-            console.log("xAPI statement sent", resp);
+            console.log("xAPI statement sent", verbDisplay, resp);
           }
         });
       }
 
       window.onload = function () {
-        sendStatement();
+        sendStatement("http://adlnet.gov/expapi/verbs/launched", "launched");
         Start();
+      };
+
+      window.onbeforeunload = function () {
+        sendStatement("http://adlnet.gov/expapi/verbs/completed", "completed");
       };
 
       const LoadContent = function () {
