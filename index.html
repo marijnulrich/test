@@ -16,9 +16,9 @@
       REVIEW_MODE_IS_READ_ONLY = false;
       window.onbeforeunload = () => window.Unload();
 
-      const WatershedLRS = {
-        endpoint: "https://watershedlrs.com/api/organizations/26822/lrs/",
-        auth: "Basic " + btoa("89c9db57c4714b:91e213c7ccb109"),
+      const LRSConfig = {
+        endpoint: "https://github-test.lrs.io/xapi/",
+        auth: "Basic " + btoa("vufeve:talvaz"),
       };
 
       function sendStatement() {
@@ -42,7 +42,7 @@
           }
         };
 
-        ADL.XAPIWrapper.changeConfig(WatershedLRS);
+        ADL.XAPIWrapper.changeConfig(LRSConfig);
         ADL.XAPIWrapper.sendStatement(statement, function(err, resp) {
           if (err) {
             console.error("xAPI statement failed", err);
