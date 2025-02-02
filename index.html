@@ -3,15 +3,15 @@
    <!-- Includes for ADL's xAPI Wrapper -->
    <!-- Download the files from: -->
    <!-- https://github.com/adlnet/xAPIWrapper -->
-   <script type="text/javascript" src="./js/cryptojs_v3.1.2.js"></script>
-    <script type="text/javascript" src="./js/xapiwrapper.js"></script>
+   <script type="text/javascript" src="./cryptojs_v3.1.2.js"></script>
+    <script type="text/javascript" src="./xapiwrapper.js"></script>
     <!------------------------------------->    
     
     <script>
     function send_statement(){
         var conf = {
-             "endpoint" : "https://watershedlrs.com/api/organizations/26822/lrs/",
-             "auth" : "Basic " + toBase64("13d2e68de2e968:2a31774048d5e6")
+             "endpoint" : "https://github-test.lrs.io/xapi/",
+             "auth" : "Basic " + toBase64("vufeve:talvaz")
              };
 
         ADL.XAPIWrapper.changeConfig(conf);
