@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xAPI Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xapiwrapper/1.10.0/xapiwrapper.min.js"></script>
+    <script>
+        const endpoint = "https://github-test.lrs.io/xapi/";
+        const username = "vufeve";
+        const password = "talvaz";
+
+        const auth = "Basic " + btoa(username + ":" + password);
+
+        function sendStatement(verb, objectId, objectName) {
+            const statement = {
+                actor: {
+                    mbox: "mailto:marijnulrich@gmail.com",
+                    name: "Marinos"
+                },
+                verb: {
+                    id: verb,
+                    display: { "en-US": verb.split('/').pop() }
+                },
+                object: {
+                    id: objectId,
+                    definition: {
+                        name: { "en-US": objectName }
+                    }
+                }
+            };
+
+            ADL.XAPIWrapper.changeConfig({
+                endpoint: endpoint,
+                auth: auth
+            });
+
+            ADL.XAPIWrapper.sendStatement(statement, function (err, resp, body) {
+                if (err) {
+                    console.error("Failed to send statement:", err);
+                } else {
+                    console.log("Statement sent:", body);
+                }
+            });
+        }
+
+        function trackPageView() {
+            sendStatement("http://adlnet.gov/expapi/verbs/viewed", window.location.href, document.title);
+        }
+
+        function trackButtonClick() {
+            sendStatement("http://adlnet.gov/expapi/verbs/interacted", "http://example.com/button", "Test Button");
+        }
+
+        window.onload = trackPageView;
+    </script>
+</head>
+<body>
+    <h1>Welcome to xAPI Test Page</h1>
+    <button onclick="trackButtonClick()">Click Me</button>
+</body>
+</html>
