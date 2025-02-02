@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>xAPI Test</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xapiwrapper/1.10.0/xapiwrapper.min.js"></script>
+    <script src=xapiwrapper.min.js></script>
     <script>
         const endpoint = "https://github-test.lrs.io/xapi/";
         const username = "vufeve";
@@ -15,8 +15,8 @@
         function sendStatement(verb, objectId, objectName) {
             const statement = {
                 actor: {
-                    mbox: "mailto:marijnulrich@gmail.com",
-                    name: "Marinos"
+                    mbox: "mailto:example@example.com",
+                    name: "Test User"
                 },
                 verb: {
                     id: verb,
